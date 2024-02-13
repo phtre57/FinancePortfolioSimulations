@@ -67,5 +67,7 @@ export default {
 <style scoped>
 .simulation-inputs {
   padding-bottom: 4rem;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
