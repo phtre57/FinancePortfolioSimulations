@@ -29,4 +29,6 @@ async def get_monte_carlo_sims(stocks: Annotated[list[str] | None, Query()] = No
 
   portfolio_sims = service.create_monte_carlo_simulations(stocks, weights, start_date, end_date, NUMBER_OF_DAYS, NUMBER_OF_SIMS, initial_value)
 
-  return portfolio_sims.tolist()
+  return {
+    "simulations": portfolio_sims.tolist()
+  }
