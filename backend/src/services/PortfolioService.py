@@ -9,4 +9,6 @@ class PortfolioService:
 
   def create_monte_carlo_simulations(self, stocks, weights, start, end, number_of_days, number_of_sims, initial_portfolio_value):
     means, covariance_matrix = self.yahoo_client.get_stocks_data(stocks, start, end)
-    return self.monte_carlo_sims.create_monte_carlo_simulations(weights, means, covariance_matrix, number_of_days, number_of_sims, initial_portfolio_value)
+    sims = self.monte_carlo_sims.create_monte_carlo_simulations(weights, means, covariance_matrix, number_of_days, number_of_sims, initial_portfolio_value)
+    return sims.T
+

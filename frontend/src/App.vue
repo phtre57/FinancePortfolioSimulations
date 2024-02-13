@@ -1,24 +1,23 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <el-container>
+    <el-header>
+      <div class="wrapper">
+        <nav>
+          <RouterLink to="/">Home</RouterLink>
+          <RouterLink to="/about">About</RouterLink>
+          <RouterLink to="/monte-carlo-sims">Monte Carlo simulations</RouterLink>
+        </nav>
+      </div>
+    </el-header>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/monte-carlo-sims">Monte Carlo simulations</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+    <el-main>
+      <RouterView />
+    </el-main>
+  </el-container>
 </template>
 
 <style scoped>
@@ -34,9 +33,8 @@ header {
 
 nav {
   width: 100%;
-  font-size: 12px;
+  font-size: 1em;
   text-align: center;
-  margin-top: 2rem;
 }
 
 nav a.router-link-exact-active {
@@ -76,11 +74,9 @@ nav a:first-of-type {
 
   nav {
     text-align: left;
-    margin-left: -1rem;
     font-size: 1rem;
 
-    padding: 1rem 0;
-    margin-top: 1rem;
+    padding: 1rem 1rem;
   }
 }
 </style>
