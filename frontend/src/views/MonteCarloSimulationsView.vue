@@ -1,7 +1,7 @@
 <template>
   <div class="simulation-inputs">
     <el-button type="primary" @click="fetchData">
-      Simulate <el-icon class="el-icon--right"><Coin /></el-icon>
+      Simulate <el-icon class="el-icon--right"><DataLine /></el-icon>
     </el-button>
   </div>
   <div>
@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import { Coin } from '@element-plus/icons-vue'
 import Chart from 'chart.js/auto';
 
 const url = 'http://127.0.0.1:8000/portfolios/monte-carlo-sims?stocks=AAPL&stocks=GOOG&stocks=TSLA&weights=0.3&weights=0.4&weights=0.3&initial_value=10000'
@@ -27,11 +26,17 @@ export default {
       try {
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data)
         this.simulations = data.simulations;
+        this.destroyChart()
         this.createChart();
       } catch (error) {
         console.error('Error fetching data:', error);
+      }
+    },
+    destroyChart() {
+      if (this.chart) {
+        this.chart.destroy();
+        this.chart = null;
       }
     },
     createChart() {
@@ -60,6 +65,9 @@ export default {
       // Generate random color for each line
       return Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255);
     },
+  },
+  beforeUnmount() {
+    this.destroyChart();
   },
 };
 </script>
