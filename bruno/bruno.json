@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "FinancePortfolioSimulations",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

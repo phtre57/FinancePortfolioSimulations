@@ -1,3 +1,11 @@
+from fastapi import APIRouter
+
+router = APIRouter(
+    prefix="/portfolios",
+    tags=["portfolios"],
+    responses={404: {"description": "Not found"}},
+)
+
 import numpy as np
 import matplotlib.pyplot as plt
 from pandas_datareader import data as pdr
@@ -7,7 +15,7 @@ import yfinance
 CLOSE_KEY = 'Close'
 SAMPLE_NUMBER_OF_DAYS = 300
 NUMBER_OF_DAYS = 100
-NUMBER_OF_SIMS = 10000
+NUMBER_OF_SIMS = 100
 INITIAL_PORTFOLIO_VALUE = 10000
 
 yfinance.pdr_override()
@@ -43,22 +51,21 @@ def plot_sims(figure_number, stocks, weights, data):
   plt.xlabel('Days')
   plt.title(f"Monte Carlo simulations for your portfolio: {[f'{stocks[i]} {weights[i]}' for i in range(0, len(stocks))]}")
 
-stocks_1 = ["AAPL", "GOOG", "TSLA"]
-weights_1 = [0.3, 0.4, 0.3]
+@router.get("/monte-carlo-sims")
+async def get_monte_carlo_sims():
+  stocks_1 = ["AAPL", "GOOG", "TSLA"]
+  weights_1 = [0.3, 0.4, 0.3]
 
-stocks_2 = ["XEQT.TO", "HXQ.TO"]
-weights_2 = [0.99, 0.01]
+  # stocks_2 = ["XEQT.TO", "HXQ.TO"]
+  # weights_2 = [0.99, 0.01]
 
-end_date = datetime.now()
-start_date = end_date - timedelta(days=SAMPLE_NUMBER_OF_DAYS)
+  end_date = datetime.now()
+  start_date = end_date - timedelta(days=SAMPLE_NUMBER_OF_DAYS)
 
-means_1, covariance_matrix_1 = get_data(stocks_1, start_date, end_date)
-means_2, covariance_matrix_2 = get_data(stocks_2, start_date, end_date)
+  means_1, covariance_matrix_1 = get_data(stocks_1, start_date, end_date)
+  # means_2, covariance_matrix_2 = get_data(stocks_2, start_date, end_date)
 
-portfolio_sims_1 = get_monte_carlo_simulations(weights_1, means_1, covariance_matrix_1, NUMBER_OF_DAYS, NUMBER_OF_SIMS, INITIAL_PORTFOLIO_VALUE)
-portfolio_sims_2 = get_monte_carlo_simulations(weights_2, means_2, covariance_matrix_2, NUMBER_OF_DAYS, NUMBER_OF_SIMS, INITIAL_PORTFOLIO_VALUE)
+  portfolio_sims_1 = get_monte_carlo_simulations(weights_1, means_1, covariance_matrix_1, NUMBER_OF_DAYS, NUMBER_OF_SIMS, INITIAL_PORTFOLIO_VALUE)
+  # portfolio_sims_2 = get_monte_carlo_simulations(weights_2, means_2, covariance_matrix_2, NUMBER_OF_DAYS, NUMBER_OF_SIMS, INITIAL_PORTFOLIO_VALUE)
 
-plot_sims(1, stocks_1, weights_1, portfolio_sims_1)
-plot_sims(2, stocks_2, weights_2, portfolio_sims_2)
-
-plt.show()
+  return portfolio_sims_1.tolist()
