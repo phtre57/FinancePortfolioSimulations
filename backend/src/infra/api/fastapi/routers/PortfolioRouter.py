@@ -1,14 +1,10 @@
 from typing import Annotated
 from fastapi import APIRouter, Query
-import numpy as np
-import matplotlib.pyplot as plt
-from pandas_datareader import data as pdr
 from datetime import datetime, timedelta
-import yfinance
 
-from src.services.PortfolioService import PortfolioService
-from src.domain.portfolios.MonteCarloSimulations import MonteCarloSimulations
-from src.infra.clients.YahooFinanceClient import YahooFinanceClient
+from backend.src.services.PortfolioService import PortfolioService
+from backend.src.domain.portfolios.MonteCarloSimulations import MonteCarloSimulations
+from backend.src.infra.clients.YahooFinanceClient import YahooFinanceClient
 
 router = APIRouter(
     prefix="/portfolios",

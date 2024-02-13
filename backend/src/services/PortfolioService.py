@@ -1,6 +1,6 @@
 # TODO: Injection direction must be into domain or services not infra
-from src.infra.clients.YahooFinanceClient import YahooFinanceClient
-from src.domain.portfolios.MonteCarloSimulations import MonteCarloSimulations
+from backend.src.infra.clients.YahooFinanceClient import YahooFinanceClient
+from backend.src.domain.portfolios.MonteCarloSimulations import MonteCarloSimulations
 
 class PortfolioService:
   def __init__(self, monte_carlo_sims: MonteCarloSimulations, yahoo_client: YahooFinanceClient):

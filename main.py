@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from src.infra.api.fastapi.routers import PortfolioRouter
+from backend.src.infra.api.fastapi.routers import PortfolioRouter
 
 app = FastAPI()
 
