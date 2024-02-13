@@ -1,7 +1,9 @@
 <template>
   <div class="simulation-inputs">
-    <el-button type="primary" @click="fetchData">
-      Simulate <el-icon class="el-icon--right"><DataLine /></el-icon>
+    <el-button :disabled="loading" type="primary" @click="fetchData">
+      Simulate
+      <el-icon class="el-icon--right"><DataLine /></el-icon>
+      <el-icon v-if="loading" class="el-icon--right"><Loading /></el-icon>
     </el-button>
   </div>
   <div>
@@ -17,6 +19,7 @@ const url = 'http://127.0.0.1:8000/portfolios/monte-carlo-sims?stocks=AAPL&stock
 export default {
   data() {
     return {
+      loading: false,
       simulations: null,
       chart: null,
     };
@@ -24,6 +27,7 @@ export default {
   methods: {
     async fetchData() {
       try {
+        this.loading = true
         const response = await fetch(url);
         const data = await response.json();
         this.simulations = data.simulations;
@@ -31,6 +35,8 @@ export default {
         this.createChart();
       } catch (error) {
         console.error('Error fetching data:', error);
+      } finally {
+        this.loading = false
       }
     },
     destroyChart() {
@@ -73,6 +79,7 @@ export default {
 </script>
 
 <style scoped>
+
 .simulation-inputs {
   padding-bottom: 4rem;
   display: flex;
