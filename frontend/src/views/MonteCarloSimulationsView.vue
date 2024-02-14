@@ -14,7 +14,12 @@
 <script>
 import Chart from 'chart.js/auto';
 
-const url = 'http://127.0.0.1:8000/portfolios/monte-carlo-sims?stocks=AAPL&stocks=GOOG&stocks=TSLA&weights=0.3&weights=0.4&weights=0.3&initial_value=10000'
+const url = 'http://127.0.0.1:8000/portfolios/monte-carlo-sims'
+const request = {
+  "stocks": ["AAPL", "GOOG", "TSLA"],
+  "weights": [0.3, 0.4, 0.3],
+  "initial_value": 10000
+}
 
 export default {
   data() {
@@ -28,7 +33,13 @@ export default {
     async fetchData() {
       try {
         this.loading = true
-        const response = await fetch(url);
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(request),
+        });
         const data = await response.json();
         this.simulations = data.simulations;
         this.destroyChart()

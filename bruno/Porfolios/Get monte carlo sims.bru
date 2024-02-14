@@ -4,8 +4,16 @@ meta {
   seq: 1
 }
 
-get {
+post {
   url: {{url}}/portfolios/monte-carlo-sims
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "stocks": ["AAPL", "GOOG", "TSLA"],
+    "weights": [0.3, 0.4, 0.3],
+    "initial_value": 10000
+  }
 }

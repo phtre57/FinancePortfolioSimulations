@@ -1,5 +1,6 @@
 from typing import Annotated
 from fastapi import APIRouter, Query
+from pydantic import BaseModel
 from datetime import datetime, timedelta
 
 from backend.src.services.PortfolioService import PortfolioService
@@ -21,13 +22,17 @@ sims = MonteCarloSimulator()
 client = YahooFinanceClient()
 service = PortfolioService(sims, client)
 
+class MonteCarloSimulationRequest(BaseModel):
+    stocks: list[str]
+    weights: list[float]
+    initial_value: float
 
-@router.get("/monte-carlo-sims")
-async def get_monte_carlo_sims(stocks: Annotated[list[str] | None, Query()] = None, weights: Annotated[list[float] | None, Query()] = None, initial_value: float = INITIAL_PORTFOLIO_VALUE):
+@router.post("/monte-carlo-sims")
+async def get_monte_carlo_sims(item: MonteCarloSimulationRequest):
   end_date = datetime.now()
   start_date = end_date - timedelta(days=SAMPLE_NUMBER_OF_DAYS)
 
-  portfolio_sims = service.simulate(stocks, weights, start_date, end_date, NUMBER_OF_DAYS, NUMBER_OF_SIMS, initial_value)
+  portfolio_sims = service.simulate(item.stocks, item.weights, start_date, end_date, NUMBER_OF_DAYS, NUMBER_OF_SIMS, item.initial_value)
 
   return {
     "simulations": portfolio_sims.tolist()
