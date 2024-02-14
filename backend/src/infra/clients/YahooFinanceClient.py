@@ -10,3 +10,12 @@ class YahooFinanceClient:
       data = pdr.get_data_yahoo(stocks, start_date, end_date)
       data = data[CLOSE_KEY]
       return data.pct_change()
+
+    def search_tickers(self, query: str):
+      results = []
+      for ticker in yfinance.Tickers(f'{query}').tickers.values():
+        results.append({
+            **ticker.info
+        })
+
+      return results

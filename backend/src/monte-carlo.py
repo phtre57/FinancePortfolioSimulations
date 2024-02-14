@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from pandas_datareader import data as pdr
 from datetime import datetime, timedelta
@@ -36,6 +37,19 @@ def get_monte_carlo_simulations(weights, means, covariance_matrix, number_of_day
 
   return portfolio_sims
 
+def mcVaR(returns, alpha=5):
+  if (isinstance(returns, pd.Series)):
+    return np.percentile(returns, alpha)
+
+  raise TypeError('Not a panda series')
+
+def mcCVaR(returns, alpha=5):
+  if (isinstance(returns, pd.Series)):
+    belowVaR = returns <= mcVaR(returns, alpha=alpha)
+    return returns[belowVaR].mean()
+
+  raise TypeError('Not a panda series')
+
 def plot_sims(figure_number, stocks, weights, data):
   plt.figure(figure_number)
   plt.plot(data)
@@ -58,7 +72,28 @@ means_2, covariance_matrix_2 = get_data(stocks_2, start_date, end_date)
 portfolio_sims_1 = get_monte_carlo_simulations(weights_1, means_1, covariance_matrix_1, NUMBER_OF_DAYS, NUMBER_OF_SIMS, INITIAL_PORTFOLIO_VALUE)
 portfolio_sims_2 = get_monte_carlo_simulations(weights_2, means_2, covariance_matrix_2, NUMBER_OF_DAYS, NUMBER_OF_SIMS, INITIAL_PORTFOLIO_VALUE)
 
-plot_sims(1, stocks_1, weights_1, portfolio_sims_1)
-plot_sims(2, stocks_2, weights_2, portfolio_sims_2)
+# plot_sims(1, stocks_1, weights_1, portfolio_sims_1)
+# plot_sims(2, stocks_2, weights_2, portfolio_sims_2)
 
-plt.show()
+results_1 = pd.Series(portfolio_sims_1[-1, :])
+results_2 = pd.Series(portfolio_sims_2[-1, :])
+print('SIM1 -> VaR ', mcVaR(results_1, alpha=5), 'CVaR ', mcCVaR(results_1, alpha=5))
+print('SIM2 -> VaR ', mcVaR(results_2, alpha=5), 'CVaR ', mcCVaR(results_2, alpha=5))
+
+# plt.show()
+
+number_of_trials = 20
+number_of_simulations = [100, 1000, 10000]
+
+for number_of_simulation in number_of_simulations:
+  all_returns = []
+  for _ in range(0, number_of_trials):
+    sim = get_monte_carlo_simulations(weights_1, means_1, covariance_matrix_1, NUMBER_OF_DAYS, number_of_simulation, INITIAL_PORTFOLIO_VALUE)
+    returns = pd.Series(sim[-1, :])
+    all_returns.append(returns)
+
+  full_series = pd.concat(all_returns)
+  mean = full_series.mean()
+  std = full_series.std()
+
+  print(f'Number of sims ({number_of_simulation}) - Expected return for ["AAPL", "GOOG", "TSLA"]: {round(mean, 3)} +/- {round(1.96 * std, 3)} with 95% confidence')

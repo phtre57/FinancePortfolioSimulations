@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from backend.src.infra.api.fastapi.routers import PortfolioRouter
+from backend.src.infra.api.fastapi.routers import AssetsRouter
 from fastapi.middleware.cors import CORSMiddleware
 
 origins = [
@@ -17,6 +18,7 @@ app.add_middleware(
 )
 
 app.include_router(PortfolioRouter.router)
+app.include_router(AssetsRouter.router)
 
 @app.get("/")
 async def root():

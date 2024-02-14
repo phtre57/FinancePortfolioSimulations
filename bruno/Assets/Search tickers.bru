@@ -1,0 +1,15 @@
+meta {
+  name: Search tickers
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{url}}/assets/tickers/search?query=XEQT
+  body: none
+  auth: none
+}
+
+query {
+  query: XEQT
+}
