@@ -35,7 +35,7 @@ async def get_monte_carlo_sims(item: MonteCarloSimulationRequest):
   simulation = service.simulate(item.stocks, item.weights, start_date, end_date, NUMBER_OF_DAYS, NUMBER_OF_SIMS, item.initial_value)
 
   return {
-    # "simulations": simulation.sims.tolist(),
+    "simulations": simulation.sims.tolist(),
     "number_of_simulations": NUMBER_OF_SIMS,
     "number_of_days": NUMBER_OF_DAYS,
     "VaR": simulation.VaR,

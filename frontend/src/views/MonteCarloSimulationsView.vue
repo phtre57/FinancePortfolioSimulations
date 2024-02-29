@@ -116,12 +116,12 @@ export default {
     },
     createChart() {
       const ctx = document.getElementById('myChart').getContext('2d');
-      // const simulationsDataSets = this.simulations.map((simulation, index) => ({
-      //   label: `Simulation ${index + 1}`,
-      //   data: simulation,
-      //   backgroundColor: 'rgba(' + this.getRandomColor() + ', 0.2)',
-      //   borderColor: 'rgba(' + this.getRandomColor() + ', 1)',
-      // }))
+      const simulationsDataSets = this.simulations.map((simulation, index) => ({
+        label: `Simulation ${index + 1}`,
+        data: simulation,
+        backgroundColor: 'rgba(' + this.getRandomColor() + ', 0.2)',
+        borderColor: 'rgba(' + this.getRandomColor() + ', 1)',
+      }))
       // const VarDatasets = [{
       //   label: 'VaR',
       //   data: new Array(this.numberOfDays).fill(this.VaR),
@@ -132,23 +132,24 @@ export default {
       //   width: '10px',
       //   z: 10000,
       // }];
-      const datasets = this.lines.map((VaR) => ({
-        label: 'VaR',
-        data: new Array(this.numberOfDays).fill(VaR),
-        borderColor: 'red',
-        backgroundColor: 'red',
-        pointRadius: 0,
-        lineTension: 0,
-        width: '10px',
-        z: 10000,
-      }))
+      // const datasets = this.lines.map((VaR) => ({
+      //   label: 'VaR',
+      //   data: new Array(this.numberOfDays).fill(VaR),
+      //   borderColor: 'red',
+      //   backgroundColor: 'red',
+      //   pointRadius: 0,
+      //   lineTension: 0,
+      //   width: '10px',
+      //   z: 10000,
+      // }))
       this.chart = new Chart(ctx, {
         type: 'line', // Change chart type if needed
         data: {
           labels: [...Array(this.numberOfDays).keys()], // Generate labels
+          datasets: simulationsDataSets
           // datasets: VarDatasets.concat(simulationsDataSets),
           // datasets: VarDatasets,
-          datasets: datasets
+          // datasets: datasets
         },
         options: {
           plugins: {
